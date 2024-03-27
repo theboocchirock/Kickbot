@@ -25,15 +25,16 @@ node ./chatreader/index.js
 1. 설정 눌러 <br>
 <img src="https://github.com/theboocchirock/Kickbot/blob/main/marble1.png?raw=true">
 
-2. 사진대로 <br>
+2. Use Custom Names 체크후 Add Names 클릭 <br>
 <img src="https://github.com/theboocchirock/Kickbot/blob/main/marble2.png?raw=true">
 
-3.marble.csv 파일 불러오셈 <br>
+3. Open누르고 marble.csv 파일 불러오셈 <br>
 <img src="https://github.com/theboocchirock/Kickbot/blob/main/marble3.png?raw=true">
 
-4. 즐겜 ㅅㄱ <br>
+4. 맵 선택후 Race Type Bot 선택, Max Racer는 Name Count만큼, Play클릭 <br>
 <img src="https://github.com/theboocchirock/Kickbot/blob/main/marble4.png?raw=true">
 
+5. 즐겜
 
 # 라이센스
 MIT 라이센스입니다 (이거로 하라고 배움)
