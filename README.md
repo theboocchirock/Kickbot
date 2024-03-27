@@ -13,8 +13,10 @@ git clone https://github.com/theboocchirock/Kickbot.git
 ```bash
 npm install
 ```
+3. settings.json.example 파일명을 settings.json으로 바꾸고 킥 채널 아이디 입력
 
-3. 시작(구슬치기)
+
+4. 시작(구슬치기)
 ```bash
 node ./chatreader/index.js
 ```
