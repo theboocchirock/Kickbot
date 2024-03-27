@@ -25,7 +25,7 @@ function appendToCSV(username) {
 
 const client = await Kient.create()
 
-const channel = await client.api.channel.getChannel('rpwjddlfgdjqjfla')
+const channel = await client.api.channel.getChannel(channelId)
 await channel.connectToChatroom()
 
 
