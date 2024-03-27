@@ -21,7 +21,7 @@ npm install
 node ./chatreader/index.js
 ```
 
-#사용법
+# 사용법
 1. 설정 눌러 <br>
 <img src="https://github.com/theboocchirock/Kickbot/blob/main/marble1.png?raw=true">
 
