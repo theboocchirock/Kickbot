@@ -21,5 +21,12 @@ npm install
 node ./chatreader/index.js
 ```
 
+#사용법
+<img src="https://github.com/theboocchirock/Kickbot/blob/main/marble1.png?raw=true">
+<img src="https://github.com/theboocchirock/Kickbot/blob/main/marble2.png?raw=true">
+<img src="https://github.com/theboocchirock/Kickbot/blob/main/marble3.png?raw=true">
+<img src="https://github.com/theboocchirock/Kickbot/blob/main/marble4.png?raw=true">
+
+
 # 라이센스
 MIT 라이센스입니다 (이거로 하라고 배움)
