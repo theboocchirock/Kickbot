@@ -5,13 +5,16 @@
 # 설치
 
 이 저장소 복사
-`git clone https://github.com/theboocchirock/Kickbot.git`
+```bash
+git clone https://github.com/theboocchirock/Kickbot.git```
 
 node.js 라이브러리 설치
-`npm install`
+```bash
+npm install```
 
 시작(구슬치기)
-`node ./chatreader/index.js`
+```bash
+node ./chatreader/index.js```
 
 # 라이센스
 MIT 라이센스입니다 (이거로 하라고 배움)
