@@ -22,16 +22,16 @@ node ./chatreader/index.js
 ```
 
 #사용법
-1. 설정 눌러
+1. 설정 눌러 <br>
 <img src="https://github.com/theboocchirock/Kickbot/blob/main/marble1.png?raw=true">
 
-2. 사진대로
+2. 사진대로 <br>
 <img src="https://github.com/theboocchirock/Kickbot/blob/main/marble2.png?raw=true">
 
-3.marble.csv 파일 불러오셈
+3.marble.csv 파일 불러오셈 <br>
 <img src="https://github.com/theboocchirock/Kickbot/blob/main/marble3.png?raw=true">
 
-4. 즐겜 ㅅㄱ
+4. 즐겜 ㅅㄱ <br>
 <img src="https://github.com/theboocchirock/Kickbot/blob/main/marble4.png?raw=true">
 
 
