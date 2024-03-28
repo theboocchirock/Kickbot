@@ -66,4 +66,8 @@ client.on(Events.Chatroom.Message, async (messageInstance) => {
             console.log("중복참여는 안되ㅣㄴ다")
         }
     }
+
+    if (message.content.startsWith('!reset') && message.sender.username ==  channelId){
+        console.log("킥씨발려나")
+    }
 });
