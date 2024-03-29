@@ -68,6 +68,12 @@ client.on(Events.Chatroom.Message, async (messageInstance) => {
     }
 
     if (message.content.startsWith('!reset') && message.sender.username ==  channelId){
-        console.log("킥씨발려나")
+        try {
+            // marble.csv 파일 삭제
+            fs.unlinkSync('./chatreader/marble.csv');
+            console.log('marble.csv 파일이 성공적으로 삭제되었습니다.');
+        } catch (err) {
+            console.error('marble.csv 파일 삭제 중 오류 발생:', err);
+        }
     }
 });
