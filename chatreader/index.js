@@ -10,17 +10,40 @@ const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/
 
 // CSV 파일에서 기존 사용자 이름들을 읽어옵니다.
 function readUsernamesFromCSV() {
+    const filePath = './chatreader/marble.csv';
+
+    // 파일이 존재하지 않으면 빈 파일을 생성합니다.
+    if (!fs.existsSync(filePath)) {
+        fs.writeFileSync(filePath, '');
+        prettyLog('marble.csv 파일이 존재하지 않아 새로 생성되었습니다.','info');
+    }
+
     try {
-        const data = fs.readFileSync('./chatreader/marble.csv', 'utf-8');
+        const data = fs.readFileSync(filePath, 'utf-8');
         return data.split('\n').filter(Boolean); // 빈 행 제거
     } catch (err) {
-        console.error('CSV 파일을 읽는 중 오류 발생:', err);
+        prettyLog(`CSV 파일을 읽는 중 오류 발생: ${err}`, 'info');
         return [];
     }
 }
+
 // CSV 파일에 사용자 이름을 추가하는 함수
 function appendToCSV(username) {
     fs.appendFileSync('./chatreader/marble.csv', username + '\n');
+}
+
+function prettyLog(message, type = 'log') {
+    const timestamp = new Date().toLocaleTimeString();
+    const styles = {
+        log: '\x1b[37m',
+        info: '\x1b[34m',
+        warn: '\x1b[33m',
+        error: '\x1b[31m'
+    };
+    const reset = '\x1b[0m';
+    const style = styles[type] || styles.log;
+
+    console.log(`${style}[${timestamp}] ${message}${reset}`);
 }
 
 const client = await Kient.create()
@@ -28,13 +51,16 @@ const client = await Kient.create()
 const channel = await client.api.channel.getChannel(channelId)
 await channel.connectToChatroom()
 
+let acceptPlayCommand = true;
 
 //메시지 읽기 시작!
 client.on(Events.Chatroom.Message, async (messageInstance) => {
     const message = messageInstance.data;
 
+    /* 영상도네*/
+    
     // 메시지 내용이 !sr로 시작하고 유튜브 링크가 포함되어 있는지 확인합니다.
-    if (message.content.startsWith('!sr') && ytRegex.test(message.content)) {
+    if (message.content.startsWith('!sr ') && ytRegex.test(message.content)) {
         // 유튜브 영상의 코드를 추출합니다.
         const youtubeLink = message.content.match(ytRegex)[1];
 
@@ -48,32 +74,49 @@ client.on(Events.Chatroom.Message, async (messageInstance) => {
         };
 
         // JSON 형식으로 저장된 유튜브 영상 정보를 콘솔에 출력합니다.
-        console.log('유튜브 영상 정보:', JSON.stringify(videoInfo));
+        prettyLog(`유튜브 영상 정보: ${JSON.stringify(videoInfo, null, 2)}`, 'info');
     }
-    // !play로 시작하는 메시지 처리
-    if (message.content.startsWith('!play')) {
+
+    /* 구슬치기 */
+
+    // !play 명령어 처리
+    if (message.content.startsWith('!play ') && acceptPlayCommand) {
         const senderName = message.sender.username;
-        console.log('!play를 시작한 사용자:', senderName);
+        prettyLog(`!play사용: ${senderName}`, 'info');
 
-        // CSV 파일에서 기존 사용자 이름들을 읽어옵니다.
         const existingUsernames = readUsernamesFromCSV();
-
-        // 새로운 사용자 이름이 중복되지 않으면 CSV 파일에 추가합니다.
         if (!existingUsernames.includes(senderName)) {
             appendToCSV(senderName);
-        }
-        else {
-            console.log("중복참여는 안되ㅣㄴ다")
+        } else {
+            prettyLog("중복 참여는 허용되지 않습니다.", 'warn');
         }
     }
 
-    if (message.content.startsWith('!reset') && message.sender.username ==  channelId){
+    /* 관리자용 명령어 */
+
+    // !stop 명령어 처리
+    if (message.content.startsWith('!stop ') && message.sender.username ==  channelId ) {
+        acceptPlayCommand = false; // !play 명령어 처리 중지
+        prettyLog('!play 명령어 처리가 중지되었습니다.', 'info');
+    }
+    // !reset 명령어 처리
+    if (message.content.startsWith('!reset ') && message.sender.username ==  channelId){
         try {
             // marble.csv 파일 삭제
             fs.unlinkSync('./chatreader/marble.csv');
-            console.log('marble.csv 파일이 성공적으로 삭제되었습니다.');
-        } catch (err) {
-            console.error('marble.csv 파일 삭제 중 오류 발생:', err);
+            prettyLog('marble.csv 파일이 성공적으로 삭제되었습니다.','info');
+            acceptPlayCommand = true;
+            prettyLog('다시 !play를 통해 참여 가능합니다.','info');
+
+        } 
+        catch (err) {
+            if (err.code === 'ENOENT') {
+                acceptPlayCommand = true; 
+                prettyLog('marble.csv 파일이 이미 삭제되었거나 존재하지 않습니다. 다시 !play를 통해 참여 가능합니다.','info');
+            } else {
+                prettyLog(`reset 명령어를 실행하는 중 오류 발생: ${err.message}.`, 'error');
+            }
         }
     }
-});
+}
+);
