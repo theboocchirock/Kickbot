@@ -1,5 +1,6 @@
 # Kick 채팅 봇
-구슬치기 Kick 연동과 무료 영도 기능(미구현)
+구슬치기 Kick 연동
+무료 영도 기능(미구현)
 경고: 아직 제대로 작동안함
 
 # 설치
@@ -22,6 +23,12 @@ node ./chatreader/index.js
 ```
 
 # 사용법
+!play<br>
+그 잘 아시지 않습니까<br>
+!reset <br>
+참여자 초기화하고 다시 참여자받음 <br>
+!stop <br>
+참여자 받기를 그만두다.
 1. 설정 눌러 <br>
 <img src="https://github.com/theboocchirock/Kickbot/blob/main/marble1.png?raw=true">
 
