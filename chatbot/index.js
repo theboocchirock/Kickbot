@@ -4,7 +4,12 @@ import fs from 'fs';
 import { prettyLog } from './utils/prettyLog.js';
 import { readUsernamesFromCSV } from './utils/readUsernamesFromCSV.js'
 import { appendToCSV } from './utils/appendToCSV.js';
+import { getAcceptPlayCommand, setAcceptPlayCommand } from './utils/playState.js';
+
 import { srCommand } from './commands/songrequest.js'
+import { playCommand } from './commands/play.js';
+import { stopCommand } from './commands/stop.js';
+import { resetCommand } from './commands/reset.js';
 
 // settings.json 파일에서 채널 ID를 읽어옵니다.
 const settings = JSON.parse(fs.readFileSync('./settings.json', 'utf-8'));
@@ -31,43 +36,20 @@ client.on(Events.Chatroom.Message, async (messageInstance) => {
     /* 구슬치기 */
 
     // !play 명령어 처리
-    if (message.content.startsWith('!play') && acceptPlayCommand) {
-        const senderName = message.sender.username;
-        prettyLog(`!play사용: ${senderName}`, 'info');
-
-        const existingUsernames = readUsernamesFromCSV();
-        if (!existingUsernames.includes(senderName)) {
-            appendToCSV(senderName);
-        } else {
-            prettyLog("중복 참여는 허용되지 않습니다.", 'warn');
-        }
+    if (message.content.startsWith('!play') && getAcceptPlayCommand()) {
+        playCommand(message)
+        console.log(getAcceptPlayCommand())
     }
 
     /* 관리자용 명령어 */
 
     // !stop 명령어 처리
     if (message.content.startsWith('!stop') && message.sender.username ==  channelId ) {
-        acceptPlayCommand = false; // !play 명령어 처리 중지
-        prettyLog('!play 명령어 처리가 중지되었습니다.', 'info');
+        stopCommand();
     }
     // !reset 명령어 처리
     if (message.content.startsWith('!reset') && message.sender.username ==  channelId){
-        try {
-            // marble.csv 파일 삭제
-            fs.unlinkSync('./chatbot/marble.csv');
-            prettyLog('marble.csv 파일이 성공적으로 삭제되었습니다.','info');
-            acceptPlayCommand = true;
-            prettyLog('다시 !play를 통해 참여 가능합니다.','info');
-
-        } 
-        catch (err) {
-            if (err.code === 'ENOENT') {
-                acceptPlayCommand = true; 
-                prettyLog('marble.csv 파일이 이미 삭제되었거나 존재하지 않습니다. 다시 !play를 통해 참여 가능합니다.','info');
-            } else {
-                prettyLog(`reset 명령어를 실행하는 중 오류 발생: ${err.message}.`, 'error');
-            }
-        }
+        resetCommand();
     }
 }
 );
