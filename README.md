@@ -19,7 +19,7 @@ npm install
 
 4. 시작(구슬치기)
 ```bash
-node ./chatreader/index.js
+node ./chatbot/index.js
 ```
 
 # 사용법
