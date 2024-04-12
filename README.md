@@ -16,7 +16,7 @@ npm install
 ```
 3. settings.json.example 파일명을 settings.json으로 바꾸고 킥 채널 아이디 입력
 
-4. 시작
+4. 시작<br>
 4-1. 시작(명령어 받는)
 ```bash
 node ./chatbot/index.js
