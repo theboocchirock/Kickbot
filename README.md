@@ -26,8 +26,8 @@ node ./server/index.js
 
 # 구슬치기 사용법
 ``!play`` 게임 참여<br>
-``!reset``참여자 초기화하고 다시 참여자받음<br>
-``!stop``참여자 받기를 그만두다.<br>
+``!reset`` 참여자 초기화하고 다시 참여자받음<br>
+``!stop`` 참여자 받기를 그만두다.<br>
 1. 설정 버튼을 클릭합니다.<br>
 <img src="https://github.com/theboocchirock/Kickbot/blob/main/marble1.png?raw=true">
 
