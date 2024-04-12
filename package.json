@@ -10,9 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.8",
+    "ejs": "^3.1.9",
     "express": "^4.19.1",
     "form-data": "^4.0.0",
-    "kient": "^1.0.1-12"
+    "kient": "^1.0.1-12",
+    "socket.io": "^4.7.5"
   },
   "type": "module"
 }

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>유튜브 영상 임베드</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div id="player"></div>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    
+    var player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        width: '1600',
+        height: '900',
+        videoId: '<%= videoId %>',
+        playerVars: {
+          'autoplay': 1,
+          'controls': 1,
+          'rel': 1
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+
+    function onPlayerReady(event) {
+      event.target.playVideo();
+    }
+
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.ENDED) {
+        deleteVideo('<%= videoId %>');
+      }
+    }
+
+    function deleteVideo(videoId) {
+      $.ajax({
+        url: '/api/delvideo',
+        type: 'POST',
+        data: JSON.stringify({ video_id: videoId }),
+        contentType: 'application/json',
+        success: function(response) {
+          console.log('영상 삭제 요청 성공:', response);
+          window.location.reload(true);
+        },
+        error: function(xhr, status, error) {
+          console.error('영상 삭제 요청 실패:', error);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
