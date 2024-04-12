@@ -16,13 +16,17 @@ npm install
 ```
 3. settings.json.example 파일명을 settings.json으로 바꾸고 킥 채널 아이디 입력
 
-
-4. 시작(구슬치기)
+4. 시작
+4-1. 시작(명령어 받는)
 ```bash
 node ./chatbot/index.js
 ```
+4-2. 시작(영도 서버)
+```bash
+node ./server/index.js
+```
 
-# 사용법
+# 구슬치기 사용법
 !play<br>
 그 잘 아시지 않습니까<br>
 !reset <br>
