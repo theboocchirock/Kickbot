@@ -24,10 +24,13 @@ node ./chatbot/index.js
 node ./server/index.js
 ```
 
+# 명령어 
+``!sr 유튜브링크`` : 곡 신청 합니다. 한 사람당 최대 3개만 가능<br>
+``!play`` : 게임 참여<br>
+``!stop`` : 게임 참가자를 그만 받습니다. (스트리머 전용)<br>
+``!reset`` : 참가자 초기화하고 다시 참가자를 받습니다. (스트리머 전용)<br>
+
 # 구슬치기 사용법
-``!play`` 게임 참여<br>
-``!reset`` 참여자 초기화하고 다시 참여자받음<br>
-``!stop`` 참여자 받기를 그만두다.<br>
 1. 설정 버튼을 클릭합니다.<br>
 <img src="https://github.com/theboocchirock/Kickbot/blob/main/marble1.png?raw=true">
 
