@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>영상 컨트롤</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    function skipVideo() {
+      <% if (typeof videoId !== 'undefined') { %>
+        fetch('/api/delvideo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ video_id: '<%= videoId %>' }),
+        })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data.message);
+            // 삭제 후 필요한 작업 수행
+            socket.emit('skipVideo');
+            window.location.reload(true);
+          })
+          .catch(error => {
+            console.error('영상 삭제 중 오류 발생:', error);
+          });
+      <% } else { %>
+        console.log('첫 번째 영상이 없습니다.');
+      <% } %>
+    }
+    socket.on('videoAdded', function() {
+      window.location.reload(true);
+    });
+  </script>
+</head>
+<body>
+  <h1>영상 컨트롤 페이지</h1>
+  <button onclick="skipVideo()">영상 스킵</button>
+</body>
+</html>
