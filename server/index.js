@@ -15,7 +15,8 @@ const httpServer = createServer(app);
 const io = new Server(httpServer);
 const PORT = 29523;
 
-// ...
+//아무것도아니야
+//ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ
 
 app.set('views', path.join(__dirname, 'public'));
 

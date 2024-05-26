@@ -7,13 +7,13 @@
     const socket = io();
 
     function skipVideo() {
-      <% if (typeof videoId !== 'undefined') { %>
+      <% if (videos.length > 0) { %>
         fetch('/api/delvideo', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ video_id: '<%= videoId %>' }),
+          body: JSON.stringify({ video_id: '<%= videos[0].video_id %>' }),
         })
           .then(response => response.json())
           .then(data => {
@@ -26,7 +26,7 @@
             console.error('영상 삭제 중 오류 발생:', error);
           });
       <% } else { %>
-        console.log('첫 번째 영상이 없습니다.');
+        console.log('스킵할 영상이 없습니다.');
       <% } %>
     }
     socket.on('videoAdded', function() {
@@ -37,5 +37,16 @@
 <body>
   <h1>영상 컨트롤 페이지</h1>
   <button onclick="skipVideo()">영상 스킵</button>
+
+  <h2>영상 리스트</h2>
+  <% if (videos.length > 0) { %>
+    <ul>
+      <% videos.forEach(function(video) { %>
+        <li><%= video.video_id %> - <%= video.senderName %></li>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <p>재생할 영상이 없습니다.</p>
+  <% } %>
 </body>
 </html>
