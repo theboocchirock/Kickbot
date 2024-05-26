@@ -1,6 +1,7 @@
 node_modules/
 settings.json
 chatreader/marble.csv
+server/youtubeLink.json
 README.md
 spotifytest.js
 spotifytest.html
