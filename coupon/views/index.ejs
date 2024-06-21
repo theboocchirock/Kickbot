@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Encryption and Decryption</title>
+</head>
+<body>
+    <h1>Image Encryption and Decryption</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" />
+        <button type="submit">Upload</button>
+    </form>
+
+    <% if (encryptedImagePath) { %>
+        <h2>Encrypted Image Information</h2>
+        <p>Key: <%= key %></p>
+        <p>IV: <%= iv %></p>
+        <img src="<%= encryptedImagePath %>" alt="Encrypted Image" />
+    <% } %>
+</body>
+</html>

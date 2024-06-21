@@ -11,10 +11,12 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^1.6.8",
+    "crypto": "^1.0.1",
     "ejs": "^3.1.9",
     "express": "^4.19.1",
     "form-data": "^4.0.0",
     "kient": "^1.0.1-12",
+    "multer": "^1.4.5-lts.1",
     "socket.io": "^4.7.5"
   },
   "type": "module"

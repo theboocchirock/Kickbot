@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decrypted Image</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+    <h1>Decrypted Image</h1>
+    
+    <form id="decryptForm">
+        <label for="encryptedImage">Select encrypted image:</label>
+        <input type="file" id="encryptedImage" name="encryptedImage" accept="image/*"><br><br>
+        <label for="key">Enter Key:</label>
+        <input type="text" id="key" name="key" placeholder="Enter Key"><br><br>
+        <label for="iv">Enter IV:</label>
+        <input type="text" id="iv" name="iv" placeholder="Enter IV"><br><br>
+        <button type="submit">Decrypt Image</button>
+    </form>
+    
+    <div id="decryptedImageContainer"></div>
+    
+    <script>
+      function getFileTypeAndExtension(arr) {
+          const uint8Array = new Uint8Array(arr.slice(0, 4));
+          const hex = Array.from(uint8Array).map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+  
+          const signatures = {
+              "89504E47": { type: "image/png", ext: ".png" },
+              "FFD8FF": { type: "image/jpeg", ext: ".jpg" },
+              "47494638": { type: "image/gif", ext: ".gif" },
+              "424D": { type: "image/bmp", ext: ".bmp" },
+          };
+  
+          for (const [signature, fileInfo] of Object.entries(signatures)) {
+              if (hex.startsWith(signature)) {
+                  return fileInfo;
+              }
+          }
+  
+          return { type: "application/octet-stream", ext: ".bin" };
+      }
+  
+      document.getElementById('decryptForm').addEventListener('submit', async function (event) {
+          event.preventDefault();
+          
+          const statusContainer = document.getElementById('decryptedImageContainer');
+          statusContainer.innerHTML = '<p>Decrypting image...</p>';
+  
+          const key = CryptoJS.enc.Hex.parse(document.getElementById('key').value);
+          const iv = CryptoJS.enc.Hex.parse(document.getElementById('iv').value);
+          const encryptedImageFile = document.getElementById('encryptedImage').files[0];
+          
+          const reader = new FileReader();
+          reader.onload = async function (e) {
+              try {
+                  const encryptedData = new Uint8Array(e.target.result);
+                  
+                  const decrypted = CryptoJS.AES.decrypt(
+                      { ciphertext: CryptoJS.lib.WordArray.create(encryptedData) },
+                      key,
+                      { 
+                          iv: iv,
+                          mode: CryptoJS.mode.CBC,
+                          padding: CryptoJS.pad.Pkcs7
+                      }
+                  );
+                  
+                  let decryptedArray = new Uint8Array(decrypted.sigBytes);
+                  const words = decrypted.words;
+                  for (let i = 0; i < decrypted.sigBytes; i++) {
+                      decryptedArray[i] = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
+                  }
+                  
+                  // Remove potential padding
+                  while (decryptedArray[decryptedArray.length - 1] === 0) {
+                      decryptedArray = decryptedArray.slice(0, -1);
+                  }
+  
+                  console.log('Decrypted data (first 20 bytes):', decryptedArray.slice(0, 20));
+  
+                  const { type, ext } = getFileTypeAndExtension(decryptedArray);
+                  const blob = new Blob([decryptedArray], { type: type });
+                  const url = URL.createObjectURL(blob);
+                  
+                  const fileName = `decrypted_file${ext}`;
+  
+                  statusContainer.innerHTML = `
+                      <p>Decryption successful. Click the link below to download the file:</p>
+                      <a href="${url}" download="${fileName}">Download Decrypted File</a>
+                      <p>File type: ${type}</p>
+                      <p>If the file doesn't open correctly, try changing the file extension manually.</p>
+                  `;
+              } catch (error) {
+                  console.error('Decryption error:', error);
+                  statusContainer.innerHTML = `
+                      <p>Decryption failed. Please check your key and IV and try again.</p>
+                      <p>Error details (for debugging):</p>
+                      <pre>${error.toString()}</pre>
+                  `;
+              }
+          };
+          reader.readAsArrayBuffer(encryptedImageFile);
+      });
+  </script>
+</body>
+</html>
